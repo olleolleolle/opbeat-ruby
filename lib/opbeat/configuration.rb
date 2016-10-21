@@ -24,7 +24,13 @@ module Opbeat
       debug_traces: false,
 
       view_paths: [],
-      enabled_integrations: [],
+      enabled_integrations: [:delayed_job,
+                             :json,
+                             :rails,
+                             :redis,
+                             :resque,
+                             :sidekiq,
+                             :sinatra],
 
       # for tests
       disable_worker: false
