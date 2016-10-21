@@ -24,6 +24,7 @@ module Opbeat
       debug_traces: false,
 
       view_paths: [],
+      enabled_integrations: [],
 
       # for tests
       disable_worker: false
@@ -56,6 +57,7 @@ module Opbeat
     attr_accessor :disable_worker
 
     attr_accessor :view_paths
+    attr_accessor :enabled_integrations
 
     def initialize opts = {}
       DEFAULTS.merge(opts).each do |k, v|

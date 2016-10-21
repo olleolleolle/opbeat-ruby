@@ -6,6 +6,7 @@ module Opbeat
     it "has defaults" do
       conf = Configuration.new
       expect(conf.timeout).to be 100
+      expect(conf.enabled_integrations).to eq []
     end
 
     it "can initialize with a hash" do
