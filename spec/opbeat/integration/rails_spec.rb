@@ -2,7 +2,7 @@ require 'spec_helper'
 
 require 'rails'
 require 'action_controller/railtie'
-require 'opbeat/integration/railtie'
+require 'opbeat/integration/patches/railtie'
 
 describe 'Rails integration' do
   include Rack::Test::Methods

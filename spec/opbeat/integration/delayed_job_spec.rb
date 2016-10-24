@@ -16,6 +16,8 @@ if defined?(Delayed)
   )
   Delayed::Worker.backend = Delayed::Backend::Test::Job
 
+  Opbeat::Integration::DelayedJob.install
+
   describe Delayed::Plugins::Opbeat, start_without_worker: true do
     class MyJob
       def blow_up e

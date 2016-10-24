@@ -75,6 +75,9 @@ module Opbeat
 
       @subscriber.register! if @subscriber
 
+      load_injections
+      load_integrations
+
       self
     end
 
@@ -300,6 +303,40 @@ module Opbeat
       return true if config.transaction_post_interval.nil?
 
       Time.now.utc - @last_sent_transactions > config.transaction_post_interval
+    end
+
+
+
+    def load_integrations
+      enabled_integrations.each do |i|
+        "Opbeat::Integration::#{i.to_s.classify}".constantize.install
+      end
+    end
+
+    INTEGRATIONS = [:delayed_job, :rails, :rescue, :sidekiq, :rake,
+                    :capistrano2, :capistrano3]
+
+    def enabled_integrations
+      config.integrations.select { |name| INTEGRATIONS.include?(name) }
+    end
+
+    def load_injections
+      enabled_injections.each do |injection_module|
+        # TODO: Enable each injection here!
+        puts injection_module.inspect
+      end
+    end
+
+    INJECTIONS = {
+      json: Opbeat::Injections::JSON,
+      net_http: Opbeat::Injections::NetHTTP,
+      redis: Opbeat::Injections::Redis,
+      sequel: Opbeat::Injections::Sequel,
+      sinatra: Opbeat::Injections::Sinatra
+    }
+
+    def enabled_injections
+      INJECTIONS.values_at(config.integrations.select { |name| INJECTIONS.keys.include?(name) })
     end
 
   end

@@ -2,23 +2,25 @@ require 'opbeat/version'
 require 'opbeat/configuration'
 
 require 'opbeat/logging'
-require 'opbeat/client'
 require 'opbeat/error'
 require 'opbeat/trace_helpers'
 
 require 'opbeat/middleware'
 
-require 'opbeat/integration/railtie' if defined?(Rails)
+require 'opbeat/integration/rails'
+require 'opbeat/integration/delayed_job'
+require 'opbeat/integration/sidekiq'
+require 'opbeat/integration/rake'
+require 'opbeat/integration/resque'
 
 require 'opbeat/injections'
+require 'opbeat/injections/json'
 require 'opbeat/injections/net_http'
 require 'opbeat/injections/redis'
 require 'opbeat/injections/sinatra'
 require 'opbeat/injections/sequel'
 
-require 'opbeat/integration/delayed_job'
-require 'opbeat/integration/sidekiq'
-require 'opbeat/integration/resque'
+require 'opbeat/client'
 
 module Opbeat
   # Start the Opbeat client

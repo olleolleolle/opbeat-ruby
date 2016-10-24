@@ -24,13 +24,13 @@ module Opbeat
       debug_traces: false,
 
       view_paths: [],
-      enabled_integrations: [:delayed_job,
-                             :json,
-                             :rails,
-                             :redis,
-                             :resque,
-                             :sidekiq,
-                             :sinatra],
+      integrations: [:delayed_job,
+                     :json,
+                     :rails,
+                     :redis,
+                     :resque,
+                     :sidekiq,
+                     :sinatra],
 
       # for tests
       disable_worker: false
@@ -63,7 +63,7 @@ module Opbeat
     attr_accessor :disable_worker
 
     attr_accessor :view_paths
-    attr_accessor :enabled_integrations
+    attr_accessor :integrations
 
     def initialize opts = {}
       DEFAULTS.merge(opts).each do |k, v|

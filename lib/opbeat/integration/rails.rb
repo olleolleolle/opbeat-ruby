@@ -1,14 +1,15 @@
 module Opbeat
   module Integration
-    class Resque
+    class Rails
       def self.install
         begin
-          require 'resque'
+          require 'rails'
         rescue LoadError
         end
 
-        require 'opbeat/integration/patches/resque' if defined?(Resque)
+        require 'opbeat/integration/patches/rails' if defined?(Rails)
       end
     end
   end
 end
+

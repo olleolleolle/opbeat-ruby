@@ -6,13 +6,13 @@ module Opbeat
     it "has defaults" do
       conf = Configuration.new
       expect(conf.timeout).to be 100
-      expect(conf.enabled_integrations).to include(:delayed_job,
-                                                   :json,
-                                                   :rails,
-                                                   :redis,
-                                                   :resque,
-                                                   :sidekiq,
-                                                   :sinatra)
+      expect(conf.integrations).to include(:delayed_job,
+                                           :json,
+                                           :rails,
+                                           :redis,
+                                           :resque,
+                                           :sidekiq,
+                                           :sinatra)
     end
 
     it "can initialize with a hash" do

@@ -1,28 +1,16 @@
-begin
-  require 'active_support'
-  require 'delayed_job'
-rescue LoadError
-end
-
-if defined?(Delayed)
-  module Delayed
-    module Plugins
-      class Opbeat < Delayed::Plugin
-        callbacks do |lifecycle|
-          lifecycle.around(:invoke_job) do |job, *args, &block|
-            begin
-              block.call(job, *args)
-            rescue ::Opbeat::Error
-              raise # don't report Opbeat errors
-            rescue Exception => exception
-              ::Opbeat.report exception
-              raise
-            end
-          end
+module Opbeat
+  module Integration
+    class DelayedJob
+      def self.install
+        begin
+          require 'active_support'
+          require 'delayed_job'
+        rescue LoadError
         end
+
+        require 'opbeat/integration/patches/delayed_job' if defined?(Delayed)
       end
     end
   end
-
-  Delayed::Worker.plugins << Delayed::Plugins::Opbeat
 end
+
