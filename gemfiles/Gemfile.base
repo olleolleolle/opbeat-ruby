@@ -15,7 +15,7 @@ gem 'simplecov'
 
 gem 'redis'
 gem 'fakeredis'
-gem 'sqlite3'
+gem 'sqlite3', platform: :mri
 gem 'sequel'
 
 gem 'delayed_job', require: false

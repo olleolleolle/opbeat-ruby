@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'sequel'
 
 module Opbeat
-  RSpec.describe Injections::Sequel do
+  RSpec.describe Injections::Sequel, unless: RSpec::Support::Ruby.jruby? do
 
     it "is installed" do
       reg = Opbeat::Injections.installed['Sequel']
