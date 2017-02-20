@@ -27,9 +27,19 @@ module Opbeat
 
         BACKTRACE_REGEX = /^(.+?):(\d+)(?::in `(.+?)')?$/.freeze
 
+        # regexp (optional leading X: on windows, or JRuby9000 class-prefix)
+        RUBY_INPUT_FORMAT = /
+          ^ \s* (?: [a-zA-Z]: | uri:classloader: )? ([^:]+ | <.*>):
+          (\d+)
+          (?: :in \s `([^']+)')?$
+        /x
+
+        # org.jruby.runtime.callsite.CachingCallSite.call(CachingCallSite.java:170)
+        JAVA_INPUT_FORMAT = /^(.+)\.([^\.]+)\(([^\:]+)\:(\d+)\)$/
+
         class << self
           def from_line config, line
-            _, abs_path, lineno, function = line.match(BACKTRACE_REGEX).to_a
+            abs_path, lineno, function, _module_name = parse_line(line)
             lineno = lineno.to_i
             filename = strip_load_path(abs_path)
 
@@ -44,7 +54,21 @@ module Opbeat
 
           private
 
+          def parse_line(unparsed_line)
+            ruby_match = unparsed_line.match(RUBY_INPUT_FORMAT)
+            if ruby_match
+              _, file, number, method = ruby_match.to_a
+              file.sub!(/\.class$/, '.rb')
+              module_name = nil
+            else
+              java_match = unparsed_line.match(JAVA_INPUT_FORMAT)
+              _, module_name, method, file, number = java_match.to_a
+            end
+            [file, number, method, module_name]
+          end
+
           def strip_load_path path
+            return '' unless path
             prefix = $:
               .map(&:to_s)
               .select { |s| path.start_with?(s) }
