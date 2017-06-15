@@ -2,7 +2,9 @@
 language: ruby
 cache: bundler
 env:
-  - CI=true
+  global:
+    - CI=true
+    - JRUBY_OPTS=--debug
 before_install:
   - gem install bundler
 rvm:
