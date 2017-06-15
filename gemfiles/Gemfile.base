@@ -23,6 +23,7 @@ gem 'sequel'
 gem 'delayed_job', require: false
 gem 'resque', require: false
 
-unless RUBY_VERSION.to_i <= 1
-  gem 'sidekiq', require: false
+# Freeze Sidekiq to < 5 in Ruby 2.2 Gemfiles
+if RUBY_VERSION >= '2'
+  gem 'sidekiq', (RUBY_VERSION >= '2.2.2' ? '~> 5' : '~> 4'), require: false
 end
