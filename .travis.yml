@@ -23,7 +23,7 @@ matrix:
     - rvm: 2.3.3
       gemfile: gemfiles/Gemfile.rails-HEAD
     - rvm: jruby-9.1.11.0
-      gemfile: gemfiles/Gemfile.rails-5.0.x
+      gemfile: gemfiles/Gemfile.rails-HEAD
 
   exclude:
     - rvm: 2.0.0
